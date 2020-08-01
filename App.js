@@ -100,7 +100,7 @@ function MyStack() {
        />
       
     </Stack.Navigator>
-
+//cambios en la vida
 );
 }
 export default function App() {
