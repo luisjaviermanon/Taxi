@@ -95,7 +95,6 @@ export default class Mapa extends Component {
       }
       
     });
-    firebase.database().ref('destino');
   };
 
   handleBack = () => {

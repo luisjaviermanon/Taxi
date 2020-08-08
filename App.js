@@ -4,34 +4,23 @@ import { createStackNavigator,TransitionPresets} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import LoginScreen from './screen/LoginScreen';
 import Chat from './screen/ChatScreen';
-import Login from './screen/Login';
+import Admin from './screen/Admin.js'
 import Iniciar from './screen/Iniciar';
-import Mapa from './components/mapa';
-import MapTaxi from './components/MapTaxi';
-import DrawerContent from './MyDrawer/MyDrawer';
+import PassengerScreen from './screen/mapa';
+import DriverScreen from './screen/MapTaxi';
 import Registrarse from './screen/Registrarse.js'
-import * as firebase from 'firebase';
+import HomeScreen from './screen/HomeScreen.js'
 const Stack = createStackNavigator();
 const Drawer= createDrawerNavigator();
-const firebaseConfig = {
-  apiKey: "AIzaSyC3EP8ROW-vkeymU2XIyahtt04Vx7KYQnw",
-  authDomain: "car-simulator-test-82e49.firebaseapp.com",
-  databaseURL: "https://car-simulator-test-82e49.firebaseio.com",
-  projectId: "car-simulator-test-82e49",
-  storageBucket: "car-simulator-test-82e49.appspot.com",
-  messagingSenderId: "60338133662",
-  appId: "1:60338133662:web:748af1991c96cae1b9798f",
-  measurementId: "G-HR4GCJ1E00",
-};
 
-const firebaseDAO = firebase.initializeApp(firebaseConfig);
+
 function MyStack() {
   
   
   return (
     
     <Stack.Navigator
-      initialRouteName="Registrarse"
+      initialRouteName="Iniciar"
       screenOptions={{
         gestureEnabled:true,
         gestureDirection:'horizontal',
@@ -41,27 +30,37 @@ function MyStack() {
       }}
       
       >
-     
+ 
+      
       <Stack.Screen 
         name="LoginScreen" 
         component={LoginScreen}
-        firebaseDAO={firebaseDAO}
+    
         options={{ title: 'LoginScreen'},
         {headerLeft: null} 
       }
-      />      
+      />    
       <Stack.Screen 
-        name="Mapa" 
-        component={Mapa} 
-        firebaseDAO={firebaseDAO}
-        options={{ title: 'Mapa'},
+        name="Admin" 
+        component={Admin} 
+       
+        options={{ title: 'Admin'},
+        {headerLeft: null} 
+      }
+      />    
+    
+      <Stack.Screen 
+        name="PassengerScreen" 
+        component={PassengerScreen} 
+       
+        options={{ title: 'PassengerScreen'},
         {headerLeft: null} 
       }
       />   
        <Stack.Screen 
         name="Registrarse" 
         component={Registrarse} 
-        firebaseDAO={firebaseDAO}
+      
         options={{ title: 'Registrarse'},
         {headerLeft: null} 
       }
@@ -70,7 +69,7 @@ function MyStack() {
       
         name="Chat" 
         component={Chat} 
-        firebaseDAO={firebaseDAO}
+        
         options={
           {title: 'Chat'}
            
@@ -80,27 +79,26 @@ function MyStack() {
       
       name="Iniciar" 
       component={Iniciar} 
-      firebaseDAO={firebaseDAO}
+     
       options={
         {title: 'Iniciar'}
          
       }
     />
-       
-       <Stack.Screen
-        name="Login"
-        firebaseDAO={firebaseDAO}
-        component={Login}
-       />
+   
      
      <Stack.Screen
-        name="MapTaxi"
-        firebaseDAO={firebaseDAO}
-        component={MapTaxi}
+        name="DriverScreen" 
+        component={DriverScreen} 
+        
+        options={
+          {title: 'DriverScreen'}
+           
+        }
        />
       
     </Stack.Navigator>
-//cambios en la vida
+
 );
 }
 export default function App() {

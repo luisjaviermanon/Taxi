@@ -1,128 +1,128 @@
-import React, { Component } from "react";
-import { Platform,View,ScrollView } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-export default class Search extends Component {
-  state = {
-    searchFocused: false,
-    user:null,
-    destinationLocation: null,
-    mapRegion:null,
-  };
-  componentWillMount() {
-    this.setState({
-        //user: this.props.firebase.auth().currentUser,
-        //destinationLocation: this.props.pickUpLocation,
-        mapRegion: {
-            //latitude:       this.props.pickUpLocation.latitude,
-           // longitude:      this.props.pickUpLocation.longitude,
-            latitudeDelta:  0.00922*1.5,
-            longitudeDelta: 0.00421*1.5,
-        },
+import React, { useState } from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+
+import { prefix, BASE_URL, API_KEY } from "../utils/helpers";
+import Prediction from "./Prediction";
+
+const { width } = Dimensions.get("window");
+
+const initialState = {
+  place: "",
+  predictions: [],
+  loading: false
+};
+
+const PlaceInput = ({ latitude, longitude, onPredictionPress }) => {
+  const [state, setState] = useState(initialState);
+  const { container, icon, input, inputContainer } = styles;
+  const { place, loading, predictions } = state;
+
+  const renderPredictions = () => {
+    return predictions.map(prediction => {
+      const { structured_formatting, id, place_id } = prediction;
+      return (
+        <Prediction
+          main_text={structured_formatting.main_text}
+          secondary_text={structured_formatting.secondary_text}
+          key={id}
+          onPress={() => {
+            onPredictionPress(place_id);
+            setState(prevState => ({
+              ...prevState,
+              predictions: [],
+              place: structured_formatting.main_text
+            }));
+          }}
+        />
+      );
     });
-}
-
-  render() {
-    const { searchFocused } = this.state;
-    const { onLocationSelected } = this.props;
-
-    return (
-      <View style={{flex:1,backgroundColor:'#fec25a'}}>
-      <GooglePlacesAutocomplete 
-        placeholder="A donde vas?"
-        placeholderTextColor="#fff"
-        
-        onPress={onLocationSelected}
-        query={{
-          key: 'AIzaSyCcLncJS0DelHzF5QzhEFMpl3IxiQ9fYlI',
-          components: 'country:DO',
-          language: "es",
-         types: [
-         '(regions)',
-         "locality", 
-         "political",
-          "geocode",
-          "grocery_or_supermarket",
-            "food",
-            "store",
-            "point_of_interest",
-            "establishment",
-            
-            ],
-            
-        }}
-        textInputProps={{
-          onFocus: () => {
-            this.setState({ searchFocused: true });
-          },
-          onBlur: () => {
-            this.setState({ searchFocused: false });
-          },
-          autoCapitalize: "none",
-          autoCorrect: false
-        }}
-        listViewDisplayed={searchFocused}
-        fetchDetails
-        enablePoweredByContainer={false}
-       
-        styles={{
-          container: {
-            position: "absolute",
-            top: Platform.select({ ios: 60, android: 40 }),
-            width: "100%"
-          },
-          textInputContainer: {
-            flex: 1,
-            backgroundColor: "transparent",
-            height: 54,
-            marginHorizontal: 20,
-            borderTopWidth: 0,
-            borderBottomWidth: 0
-          },
-          textInput: {
-            height: 54,
-            margin: 0,
-            borderRadius: 0,
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 20,
-            paddingRight: 20,
-            marginTop: 0,
-            marginLeft: 0,
-            marginRight: 0,
-            elevation: 5,
-            shadowColor: "#000",
-            shadowOpacity: 0.1,
-            shadowOffset: { x: 0, y: 0 },
-            shadowRadius: 15,
-            borderWidth: 1,
-            borderColor: "#fdbe4f",
-            fontSize: 18,
-            backgroundColor:'#fec25a',
-            color:'#fff'
-          },
-          listView: {
-            borderWidth: 1,
-            borderColor: "#DDD",
-            backgroundColor: "#FFF",
-            marginHorizontal: 20,
-            elevation: 5,
-            shadowColor: "#000",
-            shadowOpacity: 0.1,
-            shadowOffset: { x: 0, y: 0 },
-            shadowRadius: 15,
-            marginTop: 10
-          },
-          description: {
-            fontSize: 16
-          },
-          row: {
-            padding: 20,
-            height: 58
-          }
-        }}
-      />
-       
+  };
+  const search = async url => {
+    try {
+      const {
+        data: { predictions }
+      } = await axios.get(url);
+      setState(prevState => ({
+        ...prevState,
+        predictions,
+        loading: false
+      }));
+    } catch (e) {
+      console.error("error search", e);
+    }
+  };
+  const handleChangeText = value => {
+    setState(prevState => ({
+      ...prevState,
+      place: value,
+      loading: true
+    }));
+    const url = `${BASE_URL}/place/autocomplete/json?key=${API_KEY}&input=${value}&location=${latitude},${longitude}&radius=2000&language=es`;
+    // console.log("url", url);
+    search(url);
+  };
+  return (
+    
+    <View style={container}>
+      <View style={inputContainer}>
+        <TextInput
+        placeholder='A donde vas'
+        placeholderTextColor='#fff'
+          style={input}
+          value={place}
+          onChangeText={handleChangeText}
+        />
+        {!loading && <Ionicons style={icon} name={`${prefix}-search`} />}
+        {loading && <ActivityIndicator />}
       </View>
-    );
+      {!loading && predictions.length > 0 ? renderPredictions() : null}
+    </View>
+    
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+   
+    position: "absolute",
+    top: 20,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    width: width - 50,
+    backgroundColor: "#fec35b",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  icon: {
+    fontSize: 25,
+    color: "#d6d6d6"
+  },
+  input: {
+    
+    fontSize: 20,
+    color: "#fff",
+    maxWidth: "70%",
+    minWidth: "30%",
+    
+  },
+  inputContainer: {
+    backgroundColor:'#fec35b',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10
   }
-}
+});
+
+export default PlaceInput;

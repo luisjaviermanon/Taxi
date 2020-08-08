@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {TextInput,View,StyleSheet,Text,TouchableOpacity,Button} from 'react-native';
+import React from 'react';
+import {TextInput,View,StyleSheet,Text,TouchableOpacity,Alert} from 'react-native';
 import firebase from '../database/firebase2'
 export default class Iniciar extends React.Component{
   
@@ -21,9 +21,14 @@ export default class Iniciar extends React.Component{
       }
     
       userLogin = () => {
+        
         if(this.state.email === '' && this.state.password === '') {
           Alert.alert('¡Ingrese los detalles para iniciar sesión!')
-        } else {
+        }
+        if(this.state.email === 'Admin' && this.state.password === '1234') {
+          Alert.alert('Bienvenido admin')
+          this.props.navigation.navigate('Admin')
+      } else {
           this.setState({
             isLoading: true,
           })

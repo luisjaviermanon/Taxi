@@ -1,4 +1,4 @@
-export const stickerConfig = {
+/*export const stickerConfig = {
     identifier: 'myprojectstickers',
     name: 'MyProject Stickers',
     publisher: 'Jainero Xpress',
@@ -22,4 +22,4 @@ export const stickerConfig = {
       }
     ]
   }
-  
+  */

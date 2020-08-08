@@ -1,4 +1,4 @@
-/*import * as firebase from 'firebase'
+import * as firebase from 'firebase'
 const firebaseConfig = {
     apiKey: "AIzaSyC3EP8ROW-vkeymU2XIyahtt04Vx7KYQnw",
     authDomain: "car-simulator-test-82e49.firebaseapp.com",
@@ -12,4 +12,3 @@ const firebaseConfig = {
   };
   firebase.initializeApp(firebaseConfig);
 export default firebase;
-*/

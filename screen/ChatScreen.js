@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Platform,KeyboardAvoidingView,SafeAreaView,View,Text } from 'react-native';
 import {GiftedChat, Message} from 'react-native-gifted-chat'
 import Fire from '../database/firebase.js'
-import RNWhatsAppStickers from "react-native-whatsapp-stickers"
-import { stickerConfig } from '../stikers.js';
+//import RNWhatsAppStickers from "react-native-whatsapp-stickers"
+//import { stickerConfig } from '../stikers.js';
+/*
 const { stickers, ...packConfig } = stickerConfig
 RNWhatsAppStickers.isWhatsAppAvailable()
 .then(isWhatsAppAvailable => {
@@ -25,7 +26,7 @@ if (isWhatsAppAvailable) {
 return undefined
 })
 .catch(e => console.log(e))
-
+*/
 export default class Chat extends React.Component{
     state={
         messages:[]

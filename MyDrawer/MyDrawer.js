@@ -1,20 +1,18 @@
-import React from 'react';
-import {View,Text,StyleSheet} from 'react-native';
-import {
-    DrawerContentScrollView,
-    DrawerItem
-} from '@react-navigation/drawer';
-export function DrawerContent(props){
-    return(
-        <View>
-               
-    <Drawer.Navigator initialRouteName="Mapa"
-     >
-      <Drawer.Screen name="Mapa" component={Mapa} />
-      <Drawer.Screen name="Iniciar Sesion" component={Iniciar} />
-      <Drawer.Screen name="Chat" component={Chat} />
-      
-    </Drawer.Navigator>
-        </View>
-    );
-}
+import { createDrawerNavigator } from 'react-navigation-drawer';
+
+// screens
+import Login from '../screens/login';
+//import CustomDrawerContent from '../components/CustomDrawerContent';
+
+const DrawerStack = createDrawerNavigator(
+  {
+    Login
+  },
+  {
+    //contentComponent: CustomDrawerContent,
+    headerMode: 'none',
+    hideStatusBar: true
+  }
+);
+
+export default DrawerStack;
