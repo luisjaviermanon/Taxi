@@ -31,7 +31,7 @@ export default class Login extends React.Component{
                 <Text style={{...styles.title, fontSize:40, color:'#fff',marginBottom:120}}>JAINERO XPRESS</Text>
                 <Text style={{...styles.title, fontSize:20, color:'#fff',padding:10}}>Bienvenido</Text>
                 <Text style={{...styles.title, color:'#fff',paddingBottom:20}}>Jainero Xpress tu trasporte mas seguro</Text>
-                <TouchableOpacity style={styles.button} onPress={()=>{this.props.navigation.navigate('Iniciar')}}>
+                <TouchableOpacity style={styles.button} onPress={()=>{this.props.navigation.navigate('DrawerScreen')}}>
                     <Text style={{color:'#fec25a'}}>Iniciar</Text>
                 </TouchableOpacity>
                 

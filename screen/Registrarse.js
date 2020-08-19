@@ -1,6 +1,6 @@
 import React from 'react';
 import {TextInput,View,StyleSheet,Text,TouchableOpacity,Button} from 'react-native';
-import firebase from 'firebase';
+import firebase from '../database/firebase2';
 export default class Registrarse extends React.Component{
  
     constructor() {
@@ -27,7 +27,7 @@ export default class Registrarse extends React.Component{
             isLoading: true,
           })
           
-          this.props.firebaseDAO
+          
           firebase.auth()
           .createUserWithEmailAndPassword(this.state.email, this.state.password)
           .then((res) => {

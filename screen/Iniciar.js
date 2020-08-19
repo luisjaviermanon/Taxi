@@ -43,7 +43,7 @@ export default class Iniciar extends React.Component{
               email: '', 
               password: ''
             })
-            this.props.navigation.navigate('MapTaxi')
+            this.props.navigation.navigate('Taxi')
           })
           .catch(error => this.setState({ errorMessage: error.message }))
         }
